@@ -49,7 +49,7 @@ class Snarf():
 
         table2 = Table('wifi_AP_ssids', MetaData(),
                       Column('mac', String(64), primary_key=True), #Len 64 for sha256
-                      Column('ssid', String(100), primary_key=True, autoincrement=False),
+                      Column('ssid', String(128), primary_key=True, autoincrement=False),
                       Column('sunc', Integer, default=0))
 
         return [table, table2]

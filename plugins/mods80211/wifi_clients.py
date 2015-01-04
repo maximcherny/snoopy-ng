@@ -53,14 +53,14 @@ class Snarf():
 
         table3 = Table('wifi_client_ssids', MetaData(),
                       Column('mac', String(64), primary_key=True), #Len 64 for sha256
-                      Column('ssid', String(32), primary_key=True, autoincrement=False),
+                      Column('ssid', String(128), primary_key=True, autoincrement=False),
                       Column('sunc', Integer, default=0))
 
         table4 = Table('wifi_probes', MetaData(),
                       Column('mac', String(64), primary_key=True), #Len 64 for sha256
-                      Column('ssid', String(32), primary_key=True),
+                      Column('ssid', String(128), primary_key=True),
                       Column('timestamp', DateTime, primary_key=True),
-                      Column('timestamp_ms', Integer, primary_key=True),
+                      Column('timestamp_ms', Integer, primary_key=True, autoincrement=False),
                       Column('dbm_antsignal', Integer),
                       Column('channel', Integer),
                       Column('fcs', Integer),
@@ -94,7 +94,7 @@ class Snarf():
         self.prox.pulse(mac, timeStamp) #Using packet time instead of system time allows us to read pcaps
         self.device_vendor.add((mac,vendor[0],vendor[1]))
 
-        if p[Dot11Elt].info != '':
+        if fcs = 1 and p[Dot11Elt].info != '':
             ssid = p[Dot11Elt].info.decode('utf-8')
             ssid = re.sub("\n", "", ssid)
             if self.verb > 1 and len(ssid) > 0:

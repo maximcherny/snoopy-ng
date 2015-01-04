@@ -33,7 +33,7 @@ class Snarf():
     def get_tables():
         """Make sure to define your table here"""
         table = Table('wpa_handshakes', MetaData(),
-                      Column('ssid', String(64), primary_key=True),
+                      Column('ssid', String(128), primary_key=True),
                       Column('ap_mac', String(12), primary_key=True, autoincrement=False),
                       Column('sta_mac', String(12), primary_key=True, autoincrement=False),
                       Column('anonce', String(50), primary_key=True, autoincrement=False),
