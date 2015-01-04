@@ -55,17 +55,25 @@ class Snarf():
         return [table, table2]
 
     def proc_packet(self, p):
-        if p.haslayer(Dot11Beacon) and p[Dot11Elt].info != '' and re.match("[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]", p.addr2):
+        if not p.haslayer(Dot11Beacon):
+            return
+
+        fcs = -1
+
+        if p.Flags is not None:
+            if p.Flags & 64 != 0:
+                fcs = 0
+            elif p.Flags & 64 == 0:
+                fcs = 1
+
+        if fcs == 1 and p[Dot11Elt].info != '':
+            ssid = p[Dot11Elt].info.decode('utf-8')
+            ssid = re.sub("\n", "", ssid)
             mac = re.sub(':', '', p.addr2)
             timeStamp = datetime.datetime.fromtimestamp(int(p.time))
             vendor = self.mv.lookup(mac[:6])
             if self.hash_macs == "True":
                 mac = snoop_hash(mac)
-            if b64mode:
-                ssid = b64encode(p[Dot11Elt].info)
-            else:
-                ssid = p[Dot11Elt].info.decode('utf-8', 'ignore')
-            sig_str = p.dBm_AntSignal
 
             self.prox.pulse(mac,timeStamp)
             self.ap_names.add((mac,ssid))
