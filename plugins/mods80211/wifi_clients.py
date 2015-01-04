@@ -94,7 +94,7 @@ class Snarf():
         self.prox.pulse(mac, timeStamp) #Using packet time instead of system time allows us to read pcaps
         self.device_vendor.add((mac,vendor[0],vendor[1]))
 
-        if fcs = 1 and p[Dot11Elt].info != '':
+        if fcs == 1 and p[Dot11Elt].info != '':
             ssid = p[Dot11Elt].info.decode('utf-8')
             ssid = re.sub("\n", "", ssid)
             if self.verb > 1 and len(ssid) > 0:
